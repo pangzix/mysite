@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+create
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <br/>
+                <form method="post" action=".">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="title">title</label>
+                        <input type="text" class="form-control" id="title" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="tags">Tag</label>
+                        <input type="text" class="form-control col-3" id="tags" name="tags">
+                    </div>
+                    <div class="form-group">
+                        <label for="body">body</label>
+                        <textarea type="text" class="form-control" id="body" name="body" rows="10"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+login
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <br/>
+                <h5>Register</h5>
+                <h5>cilck<a href="{% url 'userprofile:register'%}">sign up</a></h5>
+                <br/>
+                <form method="post" action=".">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="username">username</label>
+                        <input type="text" class="form-control" id="username" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">password</label>
+                        <input type="password" class="form-control" id="password" name="password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

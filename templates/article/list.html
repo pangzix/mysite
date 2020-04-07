@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+    aritcle
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-auto mr-auto">
+                <br/>
+                <form class="form-inline">
+                    <label class="sr-only">content</label>
+                    <input type="text" class="form-control mb-2 mr-sm-2" name="search" required>
+                </form>
+            </div>
+        </div>
+    {% if search %}
+        {% if articles %}
+            <h4><span style="color:red">"{{ search }}"</span>搜索结果如下:</h4>
+            <hr/>
+        {% else %}
+            <h4>暂无<span style="color:red">"{{ search }}"</span>有关的文章。 </h4>
+        {% endif %}
+    {% endif  %}
+        <div class="row mt-2">
+            {% for article in articles %}
+                <div class="col-12">
+                {% if article.column %}
+                <button type="button"
+                        class="btn btn-sm mb-2 btn-primary">
+                    {{ article.column }}
+                </button>
+                {% endif %}
+                <span>
+                    {% for tag in article.tags.all %}
+                        <a href="#" class="badge badge-secondary">
+                        {{ tag }}
+                        </a>
+                        {% endfor %}
+                </span>
+                <h4>
+                    <b>
+                        <a href="{% url 'article:article_detail' article.id%}" style="color-black;">
+                            {{ article.title }}
+                        </a>
+                    </b>
+                </h4>
+                <div>
+                    <p style="color: gray;">
+                        {{ article.body|slice:'100' }}...
+                    </p>
+                </div>
+                <p>
+                    <span style="color: green;">
+                        {{ article.created|date:'Y-m-d' }}发布&nbsp;&nbsp;&nbsp;
+                    </span>
+                    <span style="color: darkred;">
+                        {{ article.updated|date:'Y-m-d' }}更新
+                    </span>
+                </p>
+                <hr/>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+             <div class="btn-group mr-2" role="group" >
+                 {% if articles.has_previous %}
+                    <a href="?page=1&search={{ search }}" class="btn btn-secondary" type="button">&laquo; </a>
+                            <a type="button" href="?page={{ articles.previous_page_number }}&search={{ search }}"
+                                class="btn btn-secondary"
+                            >{{ articles.previous_page_number }}
+                            </a>
+                    {% endif %}
+                    <a type="button" class="current btn btn-success">{{ articles.number }}</a>
+                    {% if articles.has_next %}
+                        <a  type="button"  href="?page={{ articles.next_page_number }}&search={{ search }}"
+                            class="btn btn-secondary"
+                         >
+                            {{ articles.next_page_number }}
+                        </a>
+                        <a  type="button"  href="?page={{ articles.paginator.num_pages }}&search={{ search }}"
+                            class="btn btn-secondary"
+                        >
+                           &raquo;
+                        </a>
+            {% endif %}
+
+  </div>
+
+</div>
+    </div>
+{% endblock %}

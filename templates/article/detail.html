@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+detail
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% block toc %}
+            {% if article.toc %}
+            <div class="col-3 mt-3 mb-3">
+            {{ article.toc|safe }}
+            </div>
+            {% endif %}
+            {% endblock toc %}
+    <div class="col-9">
+        <h1 class="mt-4 mb-4">{{ article.title }}</h1>
+        <div class="alert alert-success">author:{{ article.author }}
+         · <a href="#" onclick="confirm_safe_delete()">drop</a>
+         · <a href="{% url "article:article_update" article.id %}">update</a>
+        <form style="display: none;" id="safe_delete"
+              action="{% url 'article:article_safe_delete' article.id%}"
+              method="post">
+            {% csrf_token %}
+            <button type="submit">confirm</button>
+        </form>
+        </div>
+            <p>
+                {{ article.body|safe }}
+            </p>
+        <br/>
+        <br/>
+        {% if user.is_authenticated %}
+        <div>
+            <form action="{% url 'comment:post_comment' article.id%}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="body">
+                        :
+                    </label>
+                    <textarea typeof="text" class="form-control" id="body" name="body" rows="2"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">confirm</button>
+            </form>
+        </div>
+        {% else %}
+        <br/>
+        <h5 class="row justify-content-center">
+            <a href="{% url 'userprofile:login' %}">sign in first.</a>
+        </h5>
+        {% endif %}
+    <h4>{{ comments.count }}comments</h4>
+    <div>
+        {% for comment in comments %}
+        <hr/>
+        <p>
+            <strong style="color:pink">
+                {{ comment.user }}
+            </strong>于
+            <span style="color:green">
+                {{ comment.created|date:"Y-m-d H:i:s" }}
+            </span>时说：
+        </p>
+        <pre style="font-family: inherit;font-size: 1em;">
+            {{ comment.body }}
+        </pre>
+        {% endfor %}
+    </div>
+    </div>
+    </div>
+</div>
+
+    <script>
+    function confirm_safe_delete() {
+        layer.open({
+            title:"Confirm",
+            content:"delete?",
+            yes:function (index,layero) {
+                $('form#safe_delete button').click();
+                layer.close(index);
+            },
+        })
+    }
+    </script>
+{% endblock %}
