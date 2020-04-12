@@ -9,4 +9,5 @@ urlpatterns = [
     path('article-create/',article_create,name='article_create'),
     path('article-safe-detete/<int:id>/',article_safe_detete,name='article_safe_delete'),
     path('article-update/<int:id>/',article_update,name='article_update'),
+
 ]

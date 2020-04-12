@@ -1,11 +1,20 @@
 {% extends "base.html" %}
+{% load my_filters_and_tags %}
 {% load static %}
 {% block title %}
     aritcle
 {% endblock %}
 
 {% block content %}
+
+     <div id="app"></div>
+  <script src="common.js"></script>
+  <script src="bundle.js"></script>
+  <script src="example.js"></script>
+
+
     <div class="container">
+
         <div class="row">
             <div class="col-auto mr-auto">
                 <br/>
@@ -23,15 +32,24 @@
             <h4>暂无<span style="color:red">"{{ search }}"</span>有关的文章。 </h4>
         {% endif %}
     {% endif  %}
+    
         <div class="row mt-2">
+        <div class="btn-group" role="group" aria-label="Basic example">
+
+            {% for column in column_list %}
+                    <a type="button" class="btn
+                     {% if a.column.id == column.id %}
+                     btn-primary
+                     {% else%}
+                    btn-secondary
+                      {% endif %}
+                    " href="{% url 'article:article_list'%}?column={{ column.id }}">{{ column.title }}</a>
+            {% endfor %}
+
+        </div>
+        
             {% for article in articles %}
                 <div class="col-12">
-                {% if article.column %}
-                <button type="button"
-                        class="btn btn-sm mb-2 btn-primary">
-                    {{ article.column }}
-                </button>
-                {% endif %}
                 <span>
                     {% for tag in article.tags.all %}
                         <a href="#" class="badge badge-secondary">
@@ -41,7 +59,7 @@
                 </span>
                 <h4>
                     <b>
-                        <a href="{% url 'article:article_detail' article.id%}" style="color-black;">
+                        <a href="{% url 'article:article_detail' article.id%}" style="color:black">
                             {{ article.title }}
                         </a>
                     </b>
@@ -53,16 +71,18 @@
                 </div>
                 <p>
                     <span style="color: green;">
-                        {{ article.created|date:'Y-m-d' }}发布&nbsp;&nbsp;&nbsp;
+                        {{ article.created|timesince_zh }}发布&nbsp;&nbsp;&nbsp;
                     </span>
                     <span style="color: darkred;">
-                        {{ article.updated|date:'Y-m-d' }}更新
+                        {{ article.updated|timesince_zh }}更新
                     </span>
                 </p>
                 <hr/>
                 </div>
             {% endfor %}
         </div>
+
+
         <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
              <div class="btn-group mr-2" role="group" >
                  {% if articles.has_previous %}

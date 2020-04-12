@@ -9,6 +9,12 @@
     <link href="https://cdn.bootcss.com/highlight.js/9.15.8/styles/github.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/layer/2.1/skin/layer.css" rel="stylesheet">
 
+		<link rel="stylesheet" type="text/css" href="{% static 'sidebar/css/normalize.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'sidebar/css/icons.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'sidebar/css/component.css' %}" />
+		<script src="{% static 'sidebar/js/modernizr.custom.js' %}"></script>
+
+
 <!-- highlight.js -->
     <style>
     .codehilite {
@@ -44,20 +50,56 @@
 
 </head>
 
-<body>
-    {% include 'header.html' %}
-    {% block content %}{% endblock content %}
+<body style="height: 100%">
+    <div id="st-container" class="st-container">
+        {% include 'header_side.html' %}
+        <div class="st-pusher">
+        {% include 'top_nav.html' %}
+
+
+
+    <div id="wrapper">
+        {% block content %}{% endblock content %}
+    <div id="push"></div>
+    </div>
     {% include 'footer.html' %}
+    </div><!--st-pusher -->
+    </div>
+    <style>
+        html,body{
+            height: 100%;
+            margin:0;
+        }
+        #wrapper{
+            min-height: 100%;
+            margin-bottom: -60px;
+
+        }
+
+        #footer,
+        #push{
+            height: 60px;
+        }
+    </style>
+
 
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/popper.js/1.16.1/popper.js"></script>
+    <script src="https://cdn.bootcss.com/popper.js/1.16.0/umd/popper.js"></script>
     <script src="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/js/bootstrap.js"></script>
     <script src="https://cdn.bootcss.com/layer/2.1/layer.js"></script>
     <script src="https://cdn.bootcss.com/highlight.js/9.15.8/highlight.min.js"></script>
     <script src="https://cdn.bootcss.com/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
+    <script src="https://cdn.bootcss.com/react/16.13.1/umd/react.production.min.js"></script>
+    <script src="https://cdn.bootcss.com/react-dom/16.13.1/umd/react-dom.production.min.js"></script>
+    <script src="{% static 'csrf.js' %}"></script>
+    <script src="{% static 'sidebar/js/classie.js' %}"></script>
+	<script src="{% static 'sidebar/js/sidebarEffects.js' %}"></script>
+
     <script>
     hljs.initHighlightingOnLoad();
     hljs.initLineNumbersOnLoad();
     </script>
+    {% include 'back_to_top_func.html' %}
+</div>
 </body>
 </html>

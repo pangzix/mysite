@@ -1,0 +1,11 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+      {% for column in column_list %}
+    <li {% if column_id == column.pk %}
+        class="breadcrumb-item active" aria-current="page"
+        {% else %}
+        class="breadcrumb-item"
+        {% endif %} ><a href="{% url 'article:column' column.pk %}">{{ column.title }}</a></li>
+      {% endfor %}
+  </ol>
+</nav>

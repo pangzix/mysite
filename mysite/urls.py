@@ -17,12 +17,15 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf.urls.static import static
 from django.conf import settings
+import notifications.urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('article/',include('article.urls',namespace='article')),
     path('userprofile/',include('useprofile.urls',namespace='userprofile')),
     path('comment/',include('comment.urls',namespace='comment')),
+    path('inbox/notifications/',include(notifications.urls,namespace='notifications')),
+    path('notice/',include('notice.urls',namespace='notice')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

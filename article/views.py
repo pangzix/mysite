@@ -11,27 +11,37 @@ import re
 from django.utils.text import slugify
 from markdown.extensions.toc import TocExtension
 from comment.models import Comment
+from comment.forms import CommentForm
+from  .models import ArticleColumn
 
 def article_list(request):
+    column_list = ArticleColumn.objects.all()
     search = request.GET.get('search')
-    order = request.GET.get('order')
+    column = request.GET.get('column')
+    article_list = ArticlePost.objects.all()
     if search:
-        article_list = ArticlePost.objects.filter(
+        article_list = article_list.filter(
             Q(title__icontains=search)|
             Q(body__icontains=search)
         )
     else:
         search = ''
-        article_list = ArticlePost.objects.all()
-    paginator = Paginator(article_list,6)
+
+    if column is not None and column.isdigit():
+        article_list = article_list.filter(column=column)
+
+    paginator = Paginator(article_list,3)
     page = request.GET.get('page')
     articles = paginator.get_page(page)
-    context = {'articles': articles,'search':search}
+    for article in articles:
+        a = article
+    context = {'articles': articles,'column':column,'column_list':column_list,'a':a}
     return render(request,'article/list.html',context)
 
 def article_detail(request,id):
     article = get_object_or_404(ArticlePost,id=id)
     comments = Comment.objects.filter(article=id)
+    comment_form = CommentForm()
     md = markdown.Markdown(
         extensions=[
             'markdown.extensions.extra',
@@ -41,7 +51,7 @@ def article_detail(request,id):
     article.body = md.convert(article.body)
     m = re.search(r'<div class="toc">\s*<ul>(.*)</ul>\s*</div>',md.toc,re.S)
     article.toc = m.group(1) if m is not None else ''
-    context = {'article':article,'comments':comments}
+    context = {'article':article,'comments':comments,'comment_form':comment_form,}
     return render(request,'article/detail.html',context)
 
 @login_required(login_url='/userprofile/login/')

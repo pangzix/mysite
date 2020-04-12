@@ -1,21 +1,12 @@
-<!-- 定义导航栏 -->
-{% load notifications_tags %}
-{% notifications_unread as unread_count %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container">
-
-    <!-- 导航栏商标 -->
-    <a class="navbar-brand" href="#">mysite</a>
-
-    <!-- 导航入口 -->
-    <div>
-      <ul class="navbar-nav">
-        <!-- 条目 -->
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'article:article_list' %}">article</a>
-        </li>
-          {% if user.is_authenticated %}
-              <li class="navbar-item dropdown">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <div id="st-trigger-effects" class="column">
+        <button type="button" data-effect="st-effect-13"><span class="navbar-toggler-icon"></span> </button>
+    </div>
+<div>
+    <ul class="navbar-nav">
+        {% if user.is_authenticated %}
+        <li class="navbar-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    {% if unread_count %}
                        <svg viewBox="0 0 8 8" width="8px" height="8px">
@@ -40,8 +31,7 @@
                 <a class="nav-link" href="{% url 'userprofile:login' %}">sign in</a>
               </li>
           {% endif %}
-      </ul>
-    </div>
-
+    </ul>
+</div>
   </div>
 </nav>
